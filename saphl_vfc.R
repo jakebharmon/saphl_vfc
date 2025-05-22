@@ -53,7 +53,7 @@ vfc_per_county<-vfc_per_county%>%
   mutate(chip_num=round(as.numeric(child_num)*chip_pcnt)/100) %>% 
   mutate(patient_provider_ratio=round((chip_num+child_unins_num)/vfc_num))
 
-###Data analysis
+### Data analysis
 
 
 # VA counties - downloaded via the awesome tigris package
