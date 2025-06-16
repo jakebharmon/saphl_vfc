@@ -1,2 +1,5 @@
-# saphl_vfc
-Download HTML leaflet: https://drive.google.com/file/d/132ILLA6e_qWKhkKlcyCIuS5STknC-Aj7/view?usp=sharing
+# Mapping Vaccines For Children providers across the South
+
+This project was done in conjunction with the Southern Alliance for Public Health Leadership to examine the relationship between Vaccines For Children providers and eligible populations. Check out our map of South Carolina, where we demonstrate the locales that likely have a high number of eligable children yet little access to free vaccines.
+
+Our children population variable is based on data from the American Community Survey, from which we pulled child poverty data from [table B17020](https://censusreporter.org/tables/B17020/) by Zip Code Tabulation Area (ZCTA). We also determined the accessibility of free vaccines by counting the number of Vaccines For Children providers within 10 miles of the center of each ZCTA. You can find [South Carolina's VFC provider list here](https://scdph.maps.arcgis.com/apps/instant/nearby/index.html?appid=410686f3d3d44b5d99dee25848c6a0bc), and you can learn more about [just what a ZCTA is here](https://atcoordinates.info/2020/05/11/the-trouble-with-zip-codes-solutions-for-data-analysis-and-mapping/). You can also download and view [the final leaflet map from here](https://drive.google.com/file/d/1Bk6QNbkY2Lh09m61gNgOay1hcLcign_f/view?usp=sharing) - don't forget to click around!
