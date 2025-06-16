@@ -1,4 +1,4 @@
-# Mapping Vaccines For Children providers across the South
+# Mapping access to free childhood vaccines across the South
 
 This project was done in conjunction with the Southern Alliance for Public Health Leadership to examine the relationship between Vaccines For Children providers and eligible populations. Check out our map of South Carolina, where we demonstrate the locales that likely have a high number of eligable children yet little access to free vaccines.
 
