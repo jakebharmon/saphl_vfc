@@ -82,37 +82,55 @@ haversine = (
              0)   
          ) %>% 
   mutate(
-    vfc_breaks = cut(rowsum,      # Bin VFC rowsums for graphing
+    vfc_breaks = cut(rowsum,               # Bin VFC rowsums for graphing
                  breaks=c(-Inf,2,10,30,Inf)),
     ratio_breaks = cut(child_per_vfc,      # Bin child/vfc ratio for graphing
                       breaks=c(-Inf,100,500,1000,Inf)))
 
 #Create function of graph
 plot_ratio = function(entity) {
-  ggplot(haversine, aes(x = rowsum, y = child_pov)) +
-    geom_point(data = filter(haversine, GEOID %in% entity), 
-               color = "red", alpha = 1, size = 4) +
-    geom_point(data = filter(haversine, !GEOID %in% entity), 
-               shape = 1, color = "grey45", size = .2) +
-    labs(x = "Number of VFC in 10 Mile Radius", 
-         y = "Number of Impoverished Children") +
-    theme_bw()
+  ggplot(haversine, aes(x = rowsum, y = child_pov)) +        # Create plot
+    geom_point(data = filter(haversine, GEOID %in% entity),  # Create red point
+               color = "blue", size = 4, shape = 18) + # Of viewed county
+    geom_point(data = filter(haversine, !GEOID %in% entity), # Plot other counties
+               shape = 22, color = "grey", alpha = 0.8, size = .2) +
+    labs(x = "# of VFC Providers in 10 Mile Radius", 
+         y = "# of Impoverished Children in ZCTA",
+         title = paste("ZCTA:",entity)) +                 # Paste ZCTA as title
+    theme_bw() +
+    theme(plot.title = element_text(
+      face = "bold",
+      hjust = 0.5)
+      )
 }
 
-p = haversine$GEOID %>% #It is important to have $ rather than [],
-                        #As $ returns a list and [] a data frame object
+p = haversine$GEOID %>%           #It is important to have $ rather than [],
+                                  #As $ returns a list and [] data frame object
   map( ~ plot_ratio(entity = .x)) # Map plot function across GEOID's
 # p[[1]] Verify
 
-#Create interactive map of South Carolina
-sc_plot = tigris::zctas(state="SC",year=2010) %>% #Call ZCTA shape files
+### Create interactive map of South Carolina
+
+`South Carolina` = tigris::zctas(state="SC",year=2010) %>% #Call ZCTA shape files
   inner_join(haversine[c(1,6)],      # Select GEOID and child_per_vfc
              by = join_by(
                "ZCTA5CE10"=="GEOID") # Match tigris colname
              ) %>% 
-  arrange(ZCTA5CE10)                 # Matches purred maps to correct shapefile
+  arrange(ZCTA5CE10) %>%             # Matches purred maps to correct shapefile
+  mutate(child_per_vfc = round(child_per_vfc))  %>% 
+  rename("Children per VFC" = 12)   #Rename and round for cleanliness
 
-sc_map<-mapview::mapview(sc_plot,zcol="child_per_vfc",
-        popup=leafpop::popupGraph(p, width = 300, height = 300))
+sc_map = mapview::mapview(       # Create Leaflet map
+  `South Carolina`,              # Clean name
+  zcol="Children per VFC",       # Clean name
+  popup=leafpop::popupGraph(     # Insert popup scatterplots
+    p,
+    width = 300, 
+    height = 300)
+  )
 
-mapview::mapshot(sc_map,url = paste0(getwd(), "/sc_map.html"))
+mapview::mapshot(                # Save leaflet map as HTML file
+  sc_map,
+  url = paste0(
+    getwd(), "/sc_map.html")
+  )
